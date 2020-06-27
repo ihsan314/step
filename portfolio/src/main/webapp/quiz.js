@@ -10,11 +10,14 @@ function presentQuiz() {
   // create array of quiz questions 
   let questions;
 
+  let quizContainer = document.getElementById('quiz-container');
   for (q in questions) {
-    let quizContainer = document.getElementById('quiz-container');
     // display the question in a container
     quizContainer.innerText = q.question;
     // Display the options
-    // When user answers display correct answer
+    // Make another container
+    // Use radio buttons
+    // Have a submit button
+    // When user clicks submit button display correct answer
   }
 }
