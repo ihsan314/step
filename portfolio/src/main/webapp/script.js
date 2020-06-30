@@ -51,7 +51,5 @@ function addRandomFact() {
 async function getOpeningGreeting() {
   const response = await fetch('/data');
   const greeting = await response.text();
-  let innerHTML = document.getElementById('opening-greeting').innerHTML;
-  innerHTML = greeting + innerHTML;
-  document.getElementById('opening-greeting').innerHTML = innerHTML;
+  document.getElementById('opening-greeting').innerHTML = greeting;
 }
