@@ -3,9 +3,21 @@
  */
 class Question {
   constructor(question, options, correct) {
-    this._question = question;
-    this._answers = answers;
-    this._correctAnswerIndex = correctAnswerIndex;
+    this.question_ = question;
+    this.answers_ = answers;
+    this.correctAnswerIndex_ = correctAnswerIndex;
+  }
+
+  getQuestion() {
+    return question_;
+  }
+
+  getAnswers() {
+    return answers_;
+  }
+
+  getCorrectAnswerIndex() {
+    return correctAnswerIndex_;
   }
 }
 
@@ -20,6 +32,7 @@ function presentQuiz() {
 
   for (q in questions) {
     // display the question in a container
+    questionContainer.innerText = q.getQuestion();
     // Display the options
     // Use radio buttons
     // Have a submit button
