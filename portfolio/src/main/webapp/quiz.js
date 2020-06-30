@@ -2,7 +2,7 @@
  * Question data type.
  */
 class Question {
-  constructor(question, options, correct) {
+  constructor(question, answers, correct) {
     this.question_ = question;
     this.answers_ = answers;
     this.correctAnswerIndex_ = correctAnswerIndex;
