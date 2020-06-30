@@ -44,3 +44,14 @@ function addRandomFact() {
   const factContainer = document.getElementById('fact-container');
   factContainer.innerText = fact;
 }
+
+/**
+ * Fetches greeting from /data for use as opening greeting
+ */
+async function getOpeningGreeting() {
+  const response = await fetch('/data');
+  const greeting = await response.text();
+  let innerHTML = document.getElementById('opening-greeting').innerHTML;
+  innerHTML = greeting + innerHTML;
+  document.getElementById('opening-greeting').innerHTML = innerHTML;
+}
