@@ -2,22 +2,22 @@
  * Question data type.
  */
 class Question {
-  constructor(question, answers, correct) {
+  constructor(question, answers, correctAnswerIndex) {
     this.question_ = question;
     this.answers_ = answers;
     this.correctAnswerIndex_ = correctAnswerIndex;
   }
 
   getQuestion() {
-    return question_;
+    return this.question_;
   }
 
   getAnswers() {
-    return answers_;
+    return this.answers_;
   }
 
   getCorrectAnswerIndex() {
-    return correctAnswerIndex_;
+    return this.correctAnswerIndex_;
   }
 }
 
@@ -48,12 +48,31 @@ function presentQuiz() {
   const answersContainer = document.getElementById('answers-container');
   const submitContainer = document.getElementById('submit-container');
 
-  for (q in questions) {
+  for (const q of questions) {
+    const answers = q.getAnswers();
+    const correctIndex = q.getCorrectAnswerIndex();
     // display the question in a container
     questionContainer.innerText = q.getQuestion();
     // Display the options
-    // Use radio buttons
+    answersContainer.innerHTML = '<select>';
+    for (answer in q.getAnswers()) {
+      answersContainer.innerHTML += '<option value="' + answer + '">' + answer + '</option>';
+    }
+    answersContainer.innerHTML += '<option value="" selected></option>';
+    answersContainer.innerHTML += '</select>';
     // Have a submit button
+    submitContainer.innerHTML = '<button type="button" onclick="checkSubmission()">Check Your Answer</button>';
     // When user clicks submit button display correct answer
+    const numCurrentSubmissions = typeof checkSubmission.numTimesClicked === undefined ? 0 : checkSubmission.numTimesClicked;
+    while (numCurrentSubmissions === 0 || numCurrentSubmissions === checkSubmission.numTimesClicked) {
+      // wait for the user to submit the response
+    }
+    const isCorrect = correctIndex === answersContainer.getElementById('select').selectedIndex;
+    submitContainer.innerText = isCorrect ? 'Correct' : 'Incorrect: ' + answers[index];
   }
+}
+
+function checkSubmission() {
+  checkSubmission.numTimesClicked =
+      typeof checkSubmission.numTimesClicked === 'undefined' ?  1 : checkSubmission.numTimesClicked + 1;
 }
