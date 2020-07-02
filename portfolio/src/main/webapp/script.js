@@ -44,3 +44,17 @@ function addRandomFact() {
   const factContainer = document.getElementById('fact-container');
   factContainer.innerText = fact;
 }
+
+/**
+ * Fetches messages from the server and adds them to the webpage
+ */
+function displayMessages() {
+  fetch('/data').then(response => response.json()).then((messages) => {
+    console.log(messages);
+    const messageContainer = document.getElementById('messages-container');
+    messageContainer.innerText = '';
+    for (const message of messages) {
+      messageContainer.innerText += message + '\n';
+    }
+  });
+}
