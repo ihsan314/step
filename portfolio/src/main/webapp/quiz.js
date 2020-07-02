@@ -49,7 +49,7 @@ const submitContainer = document.getElementById('submit-container');
 function presentQuiz() {
   // create array of quiz questions 
 
-  for (int questionNum = 0; questionNum < questions.length; questionNum++) {
+  for (let questionNum = 0; questionNum < questions.length; questionNum++) {
     const q = questions[questionNum];
     const answers = q.getAnswers();
     const correctIndex = q.getCorrectAnswerIndex();
@@ -58,7 +58,7 @@ function presentQuiz() {
     // Display the options
     answersContainer.innerHTML += '<p>Question '+questionNum+':</p><br>';
     answersContainer.innerHTML += '<select id="question-'+questionNum+'>';
-    for (int answerIndex = 0; answerIndex < answers.length; answerIndex++) {
+    for (let answerIndex = 0; answerIndex < answers.length; answerIndex++) {
       const answer = answers[answerIndex];
       answersContainer.innerHTML += '<option value="' + answer + '">' + answer + '</option>';
     }
@@ -71,7 +71,7 @@ function presentQuiz() {
 }
 
 function checkSubmission() {
-  for (int questionNum = 0; questionNum < questions.length; questionNum++) {
+  for (let questionNum = 0; questionNum < questions.length; questionNum++) {
     const q = questions[questionNum];
     const answers = q.getAnswers();
     const correctIndex = q.getCorrectAnswerIndex();
