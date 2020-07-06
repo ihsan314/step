@@ -44,21 +44,32 @@ questions.push(
 
 function presentQuiz() {
   const questionsContainer = document.getElementById('questions-container');
-  questionsContainer.innerHTML = '';
   for (let questionNum = 0; questionNum < questions.length; questionNum++) {
     const q = questions[questionNum];
     const answers = q.getAnswers();
     const correctIndex = q.getCorrectAnswerIndex();
     // Display the options
-    questionsContainer.innerHTML += '<p>Question '+questionNum+':</p>';
-    questionsContainer.innerHTML += `<p>${q.getQuestion()}</p><br>`;
-    questionsContainer.innerHTML += `<select id="question-${questionNum}">`;
+    const questionStatement = document.createElement('p');
+    const question = document.createTextNode(`Question ${questionNum}: ${q.getQuestion()}`);
+    questionStatement.appendChild(question);
+
+    const quizArea = document.createElement('select');
+    quizArea.setAttribute('id', `question-${questionNum}`);
     for (let answerIndex = 0; answerIndex < answers.length; answerIndex++) {
-      const answer = answers[answerIndex];
-      questionsContainer.innerHTML += '<option value="' + answer + '">' + answer + '</option>';
+      const option = document.createElement('option');
+      option.setAttribute('value', answerIndex);
+      const answer = document.createTextNode(answers[answerIndex]);
+      option.appendChild(answer);
+      quizArea.appendChild(option);
     }
-    questionsContainer.innerHTML += '<option value="" selected></option>';
-    questionsContainer.innerHTML += '</select>';
+
+    const emptyAnswer = document.createElement('option');
+    emptyAnswer.setAttribute('selected', '');
+    emptyAnswer.setAttribute('value', '');
+    quizArea.appendChild(emptyAnswer);
+
+    questionsContainer.appendChild(questionStatement);
+    questionsContainer.appendChild(quizArea);
   }
 }
 
