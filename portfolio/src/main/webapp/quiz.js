@@ -42,21 +42,18 @@ questions.push(
 		['Principles of Microeconomics', 'Honours Integral Calculus',
 		  'Basic Algorithms and Data Structures', 'Introduction to Microcomputers'], 3));
 
-const quizContainer = document.getElementById('quiz-container');
-const questionsContainer = document.getElementById('questions-container');
-const submitContainer = document.getElementById('submit-container');
-
 function presentQuiz() {
+  const questionsContainer = document.getElementById('questions-container');
   questionsContainer.innerHTML = '';
-  for (const questionNum = 0; questionNum < questions.length; questionNum++) {
+  for (let questionNum = 0; questionNum < questions.length; questionNum++) {
     const q = questions[questionNum];
     const answers = q.getAnswers();
     const correctIndex = q.getCorrectAnswerIndex();
     // Display the options
     questionsContainer.innerHTML += '<p>Question '+questionNum+':</p>';
     questionsContainer.innerHTML += `<p>${q.getQuestion()}</p><br>`;
-    questionsContainer.innerHTML += '<select id="question-'+questionNum+'>';
-    for (const answerIndex = 0; answerIndex < answers.length; answerIndex++) {
+    questionsContainer.innerHTML += `<select id="question-${questionNum}">`;
+    for (let answerIndex = 0; answerIndex < answers.length; answerIndex++) {
       const answer = answers[answerIndex];
       questionsContainer.innerHTML += '<option value="' + answer + '">' + answer + '</option>';
     }
@@ -66,12 +63,13 @@ function presentQuiz() {
 }
 
 function checkSubmission() {
+  const submitContainer = document.getElementById('submit-container');
   submitContainer.innerText = '';
-  for (const questionNum = 0; questionNum < questions.length; questionNum++) {
+  for (let questionNum = 0; questionNum < questions.length; questionNum++) {
     const q = questions[questionNum];
     const answers = q.getAnswers();
     const correctIndex = q.getCorrectAnswerIndex();
-    if (answersContainer.getElementById('question-'+questionNum).selectedIndex !== correctIndex) {
+    if (document.getElementById('question-'+questionNum).selectedIndex !== correctIndex) {
       submitContainer.innerText += `Question ${questionNum} is incorrect\n`
     } else {
       submitContainer.innerText += `Question ${questionNum} is correct\n`
