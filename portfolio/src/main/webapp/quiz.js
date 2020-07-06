@@ -21,6 +21,7 @@ class Question {
   }
 }
 
+// create array of quiz questions 
 const questions = [];
 questions.push(
     new Question('What\'s my GitHub username?',
@@ -42,43 +43,38 @@ questions.push(
 		  'Basic Algorithms and Data Structures', 'Introduction to Microcomputers'], 3));
 
 const quizContainer = document.getElementById('quiz-container');
-const questionContainer = document.getElementById('question-container');
-const answersContainer = document.getElementById('answers-container');
+const questionsContainer = document.getElementById('questions-container');
 const submitContainer = document.getElementById('submit-container');
 
 function presentQuiz() {
-  // create array of quiz questions 
-
-  for (let questionNum = 0; questionNum < questions.length; questionNum++) {
+  questionsContainer.innerHTML = '';
+  for (const questionNum = 0; questionNum < questions.length; questionNum++) {
     const q = questions[questionNum];
     const answers = q.getAnswers();
     const correctIndex = q.getCorrectAnswerIndex();
-    // display the question in a container
-    questionContainer.innerText = q.getQuestion();
     // Display the options
-    answersContainer.innerHTML += '<p>Question '+questionNum+':</p><br>';
-    answersContainer.innerHTML += '<select id="question-'+questionNum+'>';
-    for (let answerIndex = 0; answerIndex < answers.length; answerIndex++) {
+    questionsContainer.innerHTML += '<p>Question '+questionNum+':</p>';
+    questionsContainer.innerHTML += `<p>${q.getQuestion()}</p><br>`;
+    questionsContainer.innerHTML += '<select id="question-'+questionNum+'>';
+    for (const answerIndex = 0; answerIndex < answers.length; answerIndex++) {
       const answer = answers[answerIndex];
-      answersContainer.innerHTML += '<option value="' + answer + '">' + answer + '</option>';
+      questionsContainer.innerHTML += '<option value="' + answer + '">' + answer + '</option>';
     }
-    answersContainer.innerHTML += '<option value="" selected></option>';
-    answersContainer.innerHTML += '</select>';
+    questionsContainer.innerHTML += '<option value="" selected></option>';
+    questionsContainer.innerHTML += '</select>';
   }
-
-  // Have a submit button that validates responses upon clicking
-  submitContainer.innerHTML = '<button type="button" onclick="checkSubmission()">Check Your Answer</button>';
 }
 
 function checkSubmission() {
-  for (let questionNum = 0; questionNum < questions.length; questionNum++) {
+  submitContainer.innerText = '';
+  for (const questionNum = 0; questionNum < questions.length; questionNum++) {
     const q = questions[questionNum];
     const answers = q.getAnswers();
     const correctIndex = q.getCorrectAnswerIndex();
     if (answersContainer.getElementById('question-'+questionNum).selectedIndex !== correctIndex) {
-      submitContainer.innerText += `Question ${questionNum} is incorrect`
+      submitContainer.innerText += `Question ${questionNum} is incorrect\n`
     } else {
-      submitContainer.innerText += `Question ${questionNum} is correct`
+      submitContainer.innerText += `Question ${questionNum} is correct\n`
     }
   }
 }
