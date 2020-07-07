@@ -21,36 +21,35 @@ class Question {
   }
 }
 
-// create array of quiz questions 
-const questions = [];
-questions.push(
-    new Question('What\'s my GitHub username?',
-		['iolawale', 'ihsan', 'olawale314', 'ihsan314'], 3));
-questions.push(
-    new Question('Where do I reside?',
-		['San Francisco, CA', 'Vancouver, BC', 'Toronto, ON', 'Palo Alto CA'], 1));
-questions.push(
-    new Question('Where do I attend university?',
-		['University of British Columbia', 'Simon Fraser University',
-		  'Stanford University', 'New York University'], 0));
-questions.push(
-    new Question('In which of these classes did I receive the highest grade?',
-		['Principles of Microeconomics', 'Honours Integral Calculus',
-		  'Basic Algorithms and Data Structures', 'Introduction to Microcomputers'], 1));
-questions.push(
-    new Question('In which of these classes did I receive the lowest grade?',
-		['Principles of Microeconomics', 'Honours Integral Calculus',
-		  'Basic Algorithms and Data Structures', 'Introduction to Microcomputers'], 3));
+const questionsArray = [];
+questionsArray.push(
+    new Question(question='What\'s my GitHub username?',
+		answers=['iolawale', 'ihsan', 'olawale314', 'ihsan314'], correctAnswerIndex=3));
+questionsArray.push(
+    new Question(question='Where do I reside?',
+		answers=['San Francisco, CA', 'Vancouver, BC', 'Toronto, ON', 'Palo Alto CA'], correctAnswerIndex=1));
+questionsArray.push(
+    new Question(question='Where do I attend university?',
+		answers=['University of British Columbia', 'Simon Fraser University',
+		  'Stanford University', 'New York University'], correctAnswerIndex=0));
+questionsArray.push(
+    new Question(question='In which of these classes did I receive the highest grade?',
+		answers=['Principles of Microeconomics', 'Honours Integral Calculus',
+		  'Basic Algorithms and Data Structures', 'Introduction to Microcomputers'], correctAnswerIndex=1));
+questionsArray.push(
+    new Question(question='In which of these classes did I receive the lowest grade?',
+		answers=['Principles of Microeconomics', 'Honours Integral Calculus',
+		  'Basic Algorithms and Data Structures', 'Introduction to Microcomputers'], correctAnswerIndex=3));
 
 function presentQuiz() {
   const questionsContainer = document.getElementById('questions-container');
-  for (let questionNum = 0; questionNum < questions.length; questionNum++) {
-    const question = questions[questionNum];
+  for (let questionNum = 0; questionNum < questionsArray.length; questionNum++) {
+    const question = questionsArray[questionNum];
     const answers = question.getAnswers();
     const correctIndex = question.getCorrectAnswerIndex();
     // Display the options
     const questionStatementElement = document.createElement('p');
-    const questionStatementText = document.createTextNode(`Question ${questionNum}: ${q.getQuestion()}`);
+    const questionStatementText = document.createTextNode(`Question ${questionNum}: ${question.getQuestion()}`);
     questionStatementElement.appendChild(questionStatementText);
 
     const quizArea = document.createElement('select');
@@ -76,8 +75,8 @@ function presentQuiz() {
 function checkSubmission() {
   const submitContainer = document.getElementById('submit-container');
   submitContainer.innerText = '';
-  for (let questionNum = 0; questionNum < questions.length; questionNum++) {
-    const question = questions[questionNum];
+  for (let questionNum = 0; questionNum < questionsArray.length; questionNum++) {
+    const question = questionsArray[questionNum];
     const correctIndex = question.getCorrectAnswerIndex();
     if (document.getElementById(generateId(questionNum)).selectedIndex !== correctIndex) {
       submitContainer.innerText += `Question ${questionNum} is incorrect\n`
