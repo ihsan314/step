@@ -32,10 +32,6 @@ public class DataServlet extends HttpServlet {
 
   @Override
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
-<<<<<<< HEAD
-    response.setContentType("text/html;");
-    response.getWriter().println("<h1>Hello Ihsan Olawale!</h1>");
-=======
     response.setContentType("application/json;");
     String json = new Gson().toJson(messages);
     response.getWriter().println(json);
@@ -48,6 +44,5 @@ public class DataServlet extends HttpServlet {
     messages.put(username, message);
     // messages.add(username);
     response.sendRedirect("/index.html");
->>>>>>> 27fb121d78e46b35f57241c83d6cd4a4b0714785
   }
 }
