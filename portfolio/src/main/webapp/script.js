@@ -46,10 +46,25 @@ function addRandomFact() {
 }
 
 /**
+<<<<<<< HEAD
  * Fetches greeting from /data for use as opening greeting
  */
 async function getOpeningGreeting() {
   const response = await fetch('/data');
   const greeting = await response.text();
   document.getElementById('opening-greeting').innerHTML = greeting;
+=======
+ * Fetches messages from the server and adds them to the webpage
+ */
+function displayMessages() {
+  fetch('/data').then(response => response.json()).then((messages) => {
+    console.log(messages);
+    const messageContainer = document.getElementById('messages-container');
+    messageContainer.innerText = '';
+    for (const username in messages) {
+      messageContainer.innerText += username + ': ' + messages[username] + '\n\n';
+      // messageContainer.innerText += username + '\n';
+    }
+  });
+>>>>>>> 27fb121d78e46b35f57241c83d6cd4a4b0714785
 }
