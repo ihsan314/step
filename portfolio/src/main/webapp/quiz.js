@@ -2,20 +2,43 @@
  * Question data type.
  */
 class Question {
+  /**
+   * @param {string} question The question that shall be posed
+   * @param {Array<string>} answers The potential responses to the question
+   * @param {number} correctAnswerIndex The index in answers that leads to the correct response
+   */
   constructor(question, answers, correctAnswerIndex) {
+    /**
+     * @private @const {string}
+     */
     this.question_ = question;
+    /**
+     * @private @const {Array<string>}
+     */
     this.answers_ = answers;
+    /**
+     * @private @const {number}
+     */
     this.correctAnswerIndex_ = correctAnswerIndex;
   }
 
+  /**
+   * @return {string}
+   */
   getQuestion() {
     return this.question_;
   }
 
+  /**
+   * @return {Array<string>}
+   */
   getAnswers() {
     return this.answers_;
   }
 
+  /**
+   * @return {number}
+   */
   getCorrectAnswerIndex() {
     return this.correctAnswerIndex_;
   }
@@ -41,6 +64,9 @@ questionsArray.push(
 		answers=['Principles of Microeconomics', 'Honours Integral Calculus',
 		  'Basic Algorithms and Data Structures', 'Introduction to Microcomputers'], correctAnswerIndex=3));
 
+/**
+ * Display the questions on the webpage, using dropdown boxes for the answers
+ */
 function presentQuiz() {
   const questionsContainer = document.getElementById('questions-container');
   for (let questionNum = 0; questionNum < questionsArray.length; questionNum++) {
@@ -72,6 +98,10 @@ function presentQuiz() {
   }
 }
 
+/**
+ * Verify the correctness of the user's responses to the questions when the "Check your answer"
+ * button is pressed.
+ */
 function checkSubmission() {
   const submitContainer = document.getElementById('submit-container');
   submitContainer.innerText = '';
@@ -86,6 +116,11 @@ function checkSubmission() {
   }
 }
 
+/**
+ * Create an id for each question for labeling the dropdown answer boxes.
+ * @param questionNum the question number to generate the id for
+ * @return {string}
+ */
 function generateId(questionNum) {
   return `question-${questionNum}`;
 }
