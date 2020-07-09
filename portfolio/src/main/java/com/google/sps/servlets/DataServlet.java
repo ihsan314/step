@@ -20,7 +20,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 // import java.util.ArrayList;
 import com.google.gson.Gson;
 import com.google.appengine.api.datastore.DatastoreService;
@@ -34,7 +34,7 @@ import com.google.appengine.api.datastore.FetchOptions;
 /** Servlet that returns some example content. TODO: modify this file to handle comments data */
 @WebServlet("/data")
 public class DataServlet extends HttpServlet {
-  // HashMap<String, String> messages = new HashMap<String, String>();
+  // LinkedHashMap<String, String> messages = new LinkedHashMap<String, String>();
   // ArrayList<String> messages = new ArrayList<String>();
   DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
   int maxNumComments;
@@ -43,7 +43,7 @@ public class DataServlet extends HttpServlet {
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
     response.setContentType("application/json;");
 
-    HashMap<String, String> messages = new HashMap<String, String>();
+    LinkedHashMap<String, String> messages = new LinkedHashMap<String, String>();
     Query query = new Query("Comment").addSort("timestamp", SortDirection.DESCENDING);
     PreparedQuery results = datastore.prepare(query);
 
