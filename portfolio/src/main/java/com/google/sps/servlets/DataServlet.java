@@ -23,16 +23,36 @@ import javax.servlet.http.HttpServletResponse;
 import java.util.HashMap;
 // import java.util.ArrayList;
 import com.google.gson.Gson;
+import com.google.appengine.api.datastore.DatastoreService;
+import com.google.appengine.api.datastore.DatastoreServiceFactory;
+import com.google.appengine.api.datastore.Entity;
+import com.google.appengine.api.datastore.PreparedQuery;
+import com.google.appengine.api.datastore.Query;
+import com.google.appengine.api.datastore.Query.SortDirection;
+import com.google.appengine.api.datastore.FetchOptions;
 
 /** Servlet that returns some example content. TODO: modify this file to handle comments data */
 @WebServlet("/data")
 public class DataServlet extends HttpServlet {
-  HashMap<String, String> messages = new HashMap<String, String>();
+  // HashMap<String, String> messages = new HashMap<String, String>();
   // ArrayList<String> messages = new ArrayList<String>();
+  DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
+  int maxNumComments;
 
   @Override
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
     response.setContentType("application/json;");
+
+    HashMap<String, String> messages = new HashMap<String, String>();
+    Query query = new Query("Comment").addSort("timestamp", SortDirection.DESCENDING);
+    PreparedQuery results = datastore.prepare(query);
+
+    for (Entity entity: results.asIterable(FetchOptions.Builder.withLimit(maxNumComments))) {
+      String username = (String) entity.getProperty("username");
+      String message = (String) entity.getProperty("message");
+      messages.put(username, message);
+    }
+
     String json = new Gson().toJson(messages);
     response.getWriter().println(json);
   }
@@ -41,8 +61,24 @@ public class DataServlet extends HttpServlet {
   public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
     String username = request.getParameter("username");
     String message = request.getParameter("comment-or-question");
-    messages.put(username, message);
+    // messages.put(username, message);
     // messages.add(username);
+    String maxNumCommentsString = request.getParameter("max-num-comments");
+    try {
+      maxNumComments = Integer.parseInt(maxNumCommentsString);
+    } catch (NumberFormatException e) {
+      System.err.println("Could not convert to int: " + maxNumCommentsString);
+      System.err.println("Using default value of 7.");
+      maxNumComments = 7;
+    }
+
+    Entity commentEntity = new Entity("Comment");
+    commentEntity.setProperty("username", username);
+    commentEntity.setProperty("message", message);
+    commentEntity.setProperty("timestamp", System.currentTimeMillis());
+
+    datastore.put(commentEntity);
+
     response.sendRedirect("/index.html");
   }
 }
