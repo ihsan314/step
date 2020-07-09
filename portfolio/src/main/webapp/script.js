@@ -31,10 +31,27 @@ function addRandomGreeting() {
  * Adds random fact about me to the page
  */
 function addRandomFact() {
+  // Keep track of how many times the function has been called, to determine
+  // when to reveal the quiz
+  if (typeof addRandomFact.numTimesCalled === undefined) {
+    addRandomFact.numTimesCalled = 0;
+  }
+  addRandomFact.numTimesCalled++;
+
+  if (addRandomFact.numTimesCalled === 3) {
+    // The last two elements of `facts` are the best indication of trolling.
+    // The probability of one of these two showing up is 2/4 = 1/2, and after
+    // 3 clicks the expected number of times at least one of these facts show up
+    // is 1.5 times. Hence 3 clicks is a good time to show the actual facts.
+    document.getElementById('quiz-container').style.display = 'block';
+    presentQuiz();
+  }
+
   const facts =
     ['I\'m a fun guy',
      'Obviously I love web development',
-     'It\'s just more questions you have to ask me in order for me to tell you more about myself',
+     'It\'s just more questions you have to ask me '+
+     'in order for me to tell you more about myself',
      'I just can\'t give you the whole spill'];
 
   // Select a random fact
