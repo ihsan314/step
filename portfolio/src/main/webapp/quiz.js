@@ -4,7 +4,7 @@
 class Question {
   /**
    * @param {string} question The question that shall be posed
-   * @param {Array<string>} answers The potential responses to the question
+   * @param {!Array<string>} answers The potential responses to the question
    * @param {number} correctAnswerIndex The index in answers that leads to the correct response
    */
   constructor(question, answers, correctAnswerIndex) {
@@ -30,7 +30,7 @@ class Question {
   }
 
   /**
-   * @return {Array<string>}
+   * @return {!Array<string>}
    */
   getAnswers() {
     return this.answers_;
@@ -46,7 +46,7 @@ class Question {
 
 const questionsArray = [];
 questionsArray.push(
-    new Question(question='What\'s my GitHub username?',
+    new Question(question=`What's my GitHub username?`,
 		answers=['iolawale', 'ihsan', 'olawale314', 'ihsan314'], correctAnswerIndex=3));
 questionsArray.push(
     new Question(question='Where do I reside?',
