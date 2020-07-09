@@ -74,30 +74,42 @@ function presentQuiz() {
     const answers = question.getAnswers();
     const correctIndex = question.getCorrectAnswerIndex();
     // Display the options
-    const questionStatementElement = document.createElement('p');
-    const questionStatementText = document.createTextNode(`Question ${questionNum}: ${question.getQuestion()}`);
-    questionStatementElement.appendChild(questionStatementText);
+    const questionStatementElement = createQuestionStatement(`Question ${questionNum}: ${question.getQuestion()}`);
 
     const quizArea = document.createElement('select');
     quizArea.setAttribute('id', generateId(questionNum));
     for (let answerIndex = 0; answerIndex < answers.length; answerIndex++) {
-      const option = document.createElement('option');
-      option.setAttribute('value', answerIndex);
-      const answer = document.createTextNode(answers[answerIndex]);
-      option.appendChild(answer);
-      quizArea.appendChild(option);
+      quizArea.appendChild(createOption());
     }
 
-    const emptyAnswer = document.createElement('option');
-    emptyAnswer.setAttribute('selected', '');
-    emptyAnswer.setAttribute('value', '');
-    quizArea.appendChild(emptyAnswer);
+    quizArea.appendChild(createEmptyOption());
 
     questionsContainer.appendChild(questionStatement);
     questionsContainer.appendChild(quizArea);
   }
 }
 
+function createQuestionStatement(questionStatementString) {
+  const questionStatementElement = document.createElement('p');
+  const questionStatementText = document.createTextNode(questionStatementString);
+  questionStatementElement.appendChild(questionStatementText);
+  return questionStatementElement;
+}
+
+function createOption(answerIndex, answerText) {
+  const option = document.createElement('option');
+  option.setAttribute('value', answerIndex);
+  const answer = document.createTextNode(answerText);
+  option.appendChild(answer);
+  return option;
+}
+
+function createEmptyOption() {
+  const emptyAnswer = document.createElement('option');
+  emptyAnswer.setAttribute('selected', '');
+  emptyAnswer.setAttribute('value', '');
+  return emptyAnswer;
+}
 /**
  * Verify the correctness of the user's responses to the questions when the "Check your answer"
  * button is pressed.
