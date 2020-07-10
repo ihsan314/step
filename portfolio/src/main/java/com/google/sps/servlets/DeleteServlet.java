@@ -9,7 +9,6 @@ import javax.servlet.http.HttpServletResponse;
 import com.google.appengine.api.datastore.DatastoreService;
 import com.google.appengine.api.datastore.Key;
 import java.util.List;
-import DataServlet;
 
 /** Servlet that deletes data from the database. */
 @WebServlet("/delete-data")
@@ -17,12 +16,9 @@ public class DeleteServlet extends HttpServlet {
 
   @Override
   public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
-    String shouldDelete = request.getParameter("shouldDelete");
-    if (shouldDelete.equals("yes")) {
-      DatastoreService datastore = DataServlet.datastore;
-      List<Key> keys = DataServlet.keys;
-      datastore.delete(keys);
-    }
+    DatastoreService datastore = DataServlet.datastore;
+    List<Key> keys = DataServlet.keys;
+    datastore.delete(keys);
     response.sendRedirect("/index.html");
   }
 }
