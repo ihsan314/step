@@ -33,7 +33,7 @@ function addRandomGreeting() {
 function addRandomFact() {
   // Keep track of how many times the function has been called, to determine
   // when to reveal the quiz
-  if (typeof addRandomFact.numTimesCalled === undefined) {
+  if (typeof addRandomFact.numTimesCalled === 'undefined') {
     addRandomFact.numTimesCalled = 0;
   }
   addRandomFact.numTimesCalled++;

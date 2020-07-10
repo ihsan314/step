@@ -84,7 +84,7 @@ function presentQuiz() {
 
     quizArea.appendChild(createEmptyOption());
 
-    questionsContainer.appendChild(questionStatement);
+    questionsContainer.appendChild(questionStatementElement);
     questionsContainer.appendChild(quizArea);
   }
 }
