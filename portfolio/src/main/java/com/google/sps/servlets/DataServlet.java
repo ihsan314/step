@@ -21,7 +21,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import java.util.LinkedHashMap;
-// import java.util.ArrayList;
+import java.util.ArrayList;
+import java.util.List;
 import com.google.gson.Gson;
 import com.google.appengine.api.datastore.DatastoreService;
 import com.google.appengine.api.datastore.DatastoreServiceFactory;
@@ -37,6 +38,7 @@ public class DataServlet extends HttpServlet {
   // LinkedHashMap<String, String> messages = new LinkedHashMap<String, String>();
   // ArrayList<String> messages = new ArrayList<String>();
   DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
+  List<Key> keys = new ArrayList<>();
   int maxNumComments;
 
   @Override
@@ -77,7 +79,7 @@ public class DataServlet extends HttpServlet {
     commentEntity.setProperty("message", message);
     commentEntity.setProperty("timestamp", System.currentTimeMillis());
 
-    datastore.put(commentEntity);
+    keys.add(datastore.put(commentEntity));
 
     response.sendRedirect("/index.html");
   }
