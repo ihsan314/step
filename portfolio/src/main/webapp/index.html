@@ -5,6 +5,7 @@
     <title>Ihsan Olawale's Portfolio</title>
     <link rel="stylesheet" href="style.css">
     <script src="script.js"></script>
+    <script src="quiz.js"></script>
   </head>
   <body onload="displayMessages()">
     <div id="content">
@@ -15,11 +16,19 @@
       <p>Click here to get a random message:</p>
       <button onclick="addRandomGreeting()">Hello</button>
       <div id="greeting-container"></div>
-      <p>Here's what I look like, at least when looking at my Google profile:</p>
+      <p>Here's what I look like, at least when looking at my Google security photo:</p>
       <img src="/images/me.png" alt="What I look like" width="300" height="300">
       <p>After seeing what I look like, you might be interested to know more about me. Don't worry, I considered this during the design phase, and presented an opportunity to cycle through assorted facts.</p>
       <button onclick="addRandomFact()">Learn about me</button>
       <div id="fact-container"></div>
+      <div id="quiz-container">
+	  <p>
+	      If you clicked the button I presented previously, you would have recognised you were trolled. I'm sorry for that, and have presented a set of multiple choice questions. Guess your way through to learn more about me:
+	  </p>
+	  <div id="questions-container"></div>
+	  <button type="button" onclick="checkSubmission()">Check Your Answer</button>
+	  <div id="submit-container"></div>
+      </div>
       <form action="/data" method="POST">
 	<p>Comment here on your perception of the content. Or ask me any questions about me.</p><br/>
 	<input type="number" name="max-num-comments" placeholder="Max number of comments displayed"><br/>
