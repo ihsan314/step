@@ -53,8 +53,9 @@ function displayMessages() {
     console.log(messages);
     const messageContainer = document.getElementById('messages-container');
     messageContainer.innerText = '';
-    for (const message of messages) {
-      messageContainer.innerText += message + '\n';
+    for (const username in messages) {
+      messageContainer.innerText += username + ': ' + messages[username] + '\n\n';
+      // messageContainer.innerText += username + '\n';
     }
   });
 }
