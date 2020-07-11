@@ -21,14 +21,13 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import java.util.HashMap;
-// import java.util.ArrayList;
+import java.util.Map;
 import com.google.gson.Gson;
 
-/** Servlet that returns some example content. TODO: modify this file to handle comments data */
+/** Servlet that returns some example content. */
 @WebServlet("/data")
 public class DataServlet extends HttpServlet {
-  HashMap<String, String> messages = new HashMap<String, String>();
-  // ArrayList<String> messages = new ArrayList<String>();
+  private Map<String, String> messages = new HashMap<String, String>();
 
   @Override
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
@@ -42,7 +41,6 @@ public class DataServlet extends HttpServlet {
     String username = request.getParameter("username");
     String message = request.getParameter("comment-or-question");
     messages.put(username, message);
-    // messages.add(username);
     response.sendRedirect("/index.html");
   }
 }
