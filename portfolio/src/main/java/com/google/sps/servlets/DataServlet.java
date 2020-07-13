@@ -26,10 +26,10 @@ import javax.servlet.http.HttpServletResponse;
 /** Servlet that returns some example content. */
 @WebServlet("/data")
 public class DataServlet extends HttpServlet {
-  List<String> messages = new ArrayList<>();
 
   @Override
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
+    List<String> messages = new ArrayList<>();
     messages.add("This is brought to you by JSON");
     messages.add("JSON is JavaScript Object Notation");
     messages.add("It is great for storing data like this");
