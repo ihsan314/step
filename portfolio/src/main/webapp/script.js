@@ -55,7 +55,6 @@ function displayMessages() {
     messageContainer.innerText = '';
     for (const username in messages) {
       messageContainer.innerText += username + ': ' + messages[username] + '\n\n';
-      // messageContainer.innerText += username + '\n';
     }
   });
 }
