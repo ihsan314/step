@@ -26,12 +26,12 @@ import javax.servlet.http.HttpServletResponse;
 /** Servlet that returns some example content. */
 @WebServlet("/data")
 public class DataServlet extends HttpServlet {
-  private final Map<String, String> messages = new ConcurrentHashMap<String, String>();
+  private final Map<String, String> messagesByUsername = new ConcurrentHashMap<>();
 
   @Override
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
     response.setContentType("application/json;");
-    String json = new Gson().toJson(messages);
+    String json = new Gson().toJson(messagesByUsername);
     response.getWriter().println(json);
   }
 
@@ -39,7 +39,7 @@ public class DataServlet extends HttpServlet {
   public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
     String username = request.getParameter("username");
     String message = request.getParameter("comment-or-question");
-    messages.put(username, message);
+    messagesByUsername.put(username, message);
     response.sendRedirect("/index.html");
   }
 }
