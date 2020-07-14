@@ -31,14 +31,15 @@ import com.google.appengine.api.datastore.PreparedQuery;
 import com.google.appengine.api.datastore.Query;
 import com.google.appengine.api.datastore.Query.SortDirection;
 import com.google.appengine.api.datastore.FetchOptions;
+import com.google.appengine.api.datastore.Key;
 
 /** Servlet that returns some example content. TODO: modify this file to handle comments data */
 @WebServlet("/data")
 public class DataServlet extends HttpServlet {
   // LinkedHashMap<String, String> messages = new LinkedHashMap<String, String>();
   // ArrayList<String> messages = new ArrayList<String>();
-  DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
-  List<Key> keys = new ArrayList<>();
+  static DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
+  static List<Key> keys = new ArrayList<>();
   int maxNumComments;
 
   @Override
