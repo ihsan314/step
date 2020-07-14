@@ -15,9 +15,10 @@ public class DeleteServlet extends HttpServlet {
 
   @Override
   public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
-    DatastoreService datastore = DataServlet.datastore;
-    List<Key> keys = DataServlet.keys;
-    datastore.delete(keys);
+    DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
+    Query query = new Query("Comment").setKeysOnly();
+    PreparedQuery keys = datastore.prepare(query);
+    datastore.delete(keys.asIterable());
     response.sendRedirect("/index.html");
   }
 }

@@ -36,8 +36,7 @@ import javax.servlet.http.HttpServletResponse;
 /** Servlet that returns some example content. TODO: modify this file to handle comments data */
 @WebServlet("/data")
 public class DataServlet extends HttpServlet {
-  static DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
-  static List<Key> keys = new ArrayList<>();
+  DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
   int maxNumComments;
 
   @Override
@@ -75,8 +74,6 @@ public class DataServlet extends HttpServlet {
     commentEntity.setProperty("username", username);
     commentEntity.setProperty("message", message);
     commentEntity.setProperty("timestamp", System.currentTimeMillis());
-
-    keys.add(datastore.put(commentEntity));
 
     response.sendRedirect("/index.html");
   }
