@@ -27,6 +27,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -35,8 +36,6 @@ import javax.servlet.http.HttpServletResponse;
 /** Servlet that returns some example content. TODO: modify this file to handle comments data */
 @WebServlet("/data")
 public class DataServlet extends HttpServlet {
-  // LinkedHashMap<String, String> messages = new LinkedHashMap<String, String>();
-  // ArrayList<String> messages = new ArrayList<String>();
   static DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
   static List<Key> keys = new ArrayList<>();
   int maxNumComments;
@@ -45,7 +44,7 @@ public class DataServlet extends HttpServlet {
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
     response.setContentType("application/json;");
 
-    LinkedHashMap<String, String> messages = new LinkedHashMap<String, String>();
+    Map<String, String> messages = new LinkedHashMap<>();
     Query query = new Query("Comment").addSort("timestamp", SortDirection.DESCENDING);
     PreparedQuery results = datastore.prepare(query);
 
@@ -63,8 +62,6 @@ public class DataServlet extends HttpServlet {
   public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
     String username = request.getParameter("username");
     String message = request.getParameter("comment-or-question");
-    // messages.put(username, message);
-    // messages.add(username);
     String maxNumCommentsString = request.getParameter("max-num-comments");
     try {
       maxNumComments = Integer.parseInt(maxNumCommentsString);
