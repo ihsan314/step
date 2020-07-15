@@ -28,7 +28,6 @@ import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Query;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -38,7 +37,8 @@ import javax.servlet.http.HttpServletResponse;
 @WebServlet("/data")
 public class DataServlet extends HttpServlet {
   private final DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
-  private int maxNumComments;
+  private final int defaultMaxNumComments = 7;
+  private int maxNumComments = defaultMaxNumComments;
 
   @Override
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
@@ -67,8 +67,8 @@ public class DataServlet extends HttpServlet {
       maxNumComments = Integer.parseInt(maxNumCommentsString);
     } catch (NumberFormatException e) {
       System.err.println("Could not convert to int: " + maxNumCommentsString);
-      System.err.println("Using default value of 7.");
-      maxNumComments = 7;
+      System.err.println("Using default value of " + defaultMaxNumComments + ".");
+      maxNumComments = defaultMaxNumComments;
     }
 
     Entity commentEntity = new Entity("Comment");
