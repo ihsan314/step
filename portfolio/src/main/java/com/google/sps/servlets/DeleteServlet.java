@@ -15,7 +15,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 /** Servlet that deletes data from the database. */
-@WebServlet("/delete-data")
+@WebServlet("/delete-messages")
 public class DeleteServlet extends HttpServlet {
 
   @Override

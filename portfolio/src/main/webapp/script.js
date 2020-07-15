@@ -61,5 +61,5 @@ function displayMessages() {
 }
 
 function deleteMessages() {
-  fetch('/delete-data', {method: 'POST'}).then((response) => displayMessages());
+  fetch('/delete-messages', {method: 'POST'}).then((response) => displayMessages());
 }
