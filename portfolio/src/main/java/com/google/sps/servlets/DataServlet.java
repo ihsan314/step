@@ -37,8 +37,7 @@ import javax.servlet.http.HttpServletResponse;
 @WebServlet("/data")
 public class DataServlet extends HttpServlet {
   private final DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
-  private final int defaultMaxNumComments = 7;
-  private int maxNumComments = defaultMaxNumComments;
+  private static final int DEFAULT_MAX_NUM_COMMENTS = 7;
 
   @Override
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
@@ -48,6 +47,7 @@ public class DataServlet extends HttpServlet {
     Query query = new Query("Comment").addSort("timestamp", SortDirection.DESCENDING);
     PreparedQuery results = datastore.prepare(query);
 
+    int maxNumComments = (int)request.getSession().getAttribute("maxNumComments");
     for (Entity entity : results.asIterable(FetchOptions.Builder.withLimit(maxNumComments))) {
       String username = (String) entity.getProperty("username");
       String message = (String) entity.getProperty("message");
@@ -63,13 +63,15 @@ public class DataServlet extends HttpServlet {
     String username = request.getParameter("username");
     String message = request.getParameter("comment-or-question");
     String maxNumCommentsString = request.getParameter("max-num-comments");
+    int maxNumComments;
     try {
       maxNumComments = Integer.parseInt(maxNumCommentsString);
     } catch (NumberFormatException e) {
-      System.err.println("Could not convert to int: " + maxNumCommentsString);
-      System.err.println("Using default value of " + defaultMaxNumComments + ".");
-      maxNumComments = defaultMaxNumComments;
+      System.err.format("Could not convert to int: %d%n", maxNumCommentsString);
+      System.err.format("Using default value of %d.%n", DEFAULT_MAX_NUM_COMMENTS);
+      maxNumComments = DEFAULT_MAX_NUM_COMMENTS;
     }
+    request.getSession().setAttribute("maxNumComments", maxNumComments);
 
     Entity commentEntity = new Entity("Comment");
     commentEntity.setProperty("username", username);
