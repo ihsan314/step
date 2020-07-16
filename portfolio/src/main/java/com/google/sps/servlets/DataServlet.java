@@ -33,7 +33,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-/** Servlet that adds/retrieves comments stored in a Datastore*/
+/** Servlet that adds/retrieves comments stored in a Datastore */
 @WebServlet("/data")
 public class DataServlet extends HttpServlet {
   private final DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
@@ -67,7 +67,7 @@ public class DataServlet extends HttpServlet {
     try {
       maxNumComments = Integer.parseInt(maxNumCommentsString);
     } catch (NumberFormatException e) {
-      System.err.format("Could not convert to int: %d%n", maxNumCommentsString);
+      System.err.format("Could not convert to int: %s%n", maxNumCommentsString);
       System.err.format("Using default value of %d.%n", DEFAULT_MAX_NUM_COMMENTS);
       maxNumComments = DEFAULT_MAX_NUM_COMMENTS;
     }
@@ -78,6 +78,7 @@ public class DataServlet extends HttpServlet {
     commentEntity.setProperty("message", message);
     commentEntity.setProperty("timestamp", System.currentTimeMillis());
 
+    datastore.put(commentEntity);
     response.sendRedirect("/index.html");
   }
 }
