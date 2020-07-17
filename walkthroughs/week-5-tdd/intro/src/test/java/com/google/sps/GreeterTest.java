@@ -40,4 +40,14 @@ public final class GreeterTest {
     // Whitespace should be trimmed
     Assert.assertEquals("Hello Ada", greeting);
   }
+
+  @Test
+  public void testGreetingTrimsSymbols() {
+    Greeter greeter = new Greeter();
+
+    String greeting = greeter.greet(" @#$Ada%^&  ");
+
+    // Whitespace should be trimmed and nonalphanumeric characters removed
+    Assert.assertEquals("Hello Ada", greeting);
+  }
 }
