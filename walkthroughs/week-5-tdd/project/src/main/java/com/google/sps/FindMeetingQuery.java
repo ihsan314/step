@@ -51,30 +51,30 @@ public final class FindMeetingQuery {
     } else {
       Iterator<Event> eventsIter = eventsSorted.iterator();
       Event event = eventsIter.next();
-      TimeRange option =
-          TimeRange.fromStartEnd(TimeRange.START_OF_DAY, event.getWhen().start(), false);
-      if (option.duration() >= request.getDuration()) {
-        options.add(option);
-      }
+      addTimeRangeIfPossible(
+          options, TimeRange.START_OF_DAY, event.getWhen().start(), request.getDuration());
       while (eventsIter.hasNext()) {
         Event nextEvent = eventsIter.next();
         if (!nextEvent.getWhen().overlaps(event.getWhen())) {
-          option =
-              TimeRange.fromStartEnd(event.getWhen().end(), nextEvent.getWhen().start(), false);
-          if (option.duration() >= request.getDuration()) {
-            options.add(option);
-          }
+          addTimeRangeIfPossible(
+              options, event.getWhen().end(), nextEvent.getWhen().start(), request.getDuration());
         }
         event = nextEvent;
       }
-      option = TimeRange.fromStartEnd(event.getWhen().end(), TimeRange.END_OF_DAY, true);
-      if (option.duration() >= request.getDuration()) {
-        options.add(option);
-      }
+      addTimeRangeIfPossible(
+          options, event.getWhen().end(), TimeRange.END_OF_DAY, request.getDuration());
     }
     if (TimeRange.WHOLE_DAY.duration() < request.getDuration()) {
       options.clear();
     }
     return options;
+  }
+
+  private void addTimeRangeIfPossible(
+      Collection<TimeRange> options, int beginTime, int endTime, long minDuration) {
+    TimeRange option = TimeRange.fromStartEnd(beginTime, endTime, endTime == TimeRange.END_OF_DAY);
+    if (option.duration() >= minDuration) {
+      options.add(option);
+    }
   }
 }
