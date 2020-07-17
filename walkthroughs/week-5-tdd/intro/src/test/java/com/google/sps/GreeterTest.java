@@ -57,4 +57,13 @@ public final class GreeterTest {
 
     Assert.assertEquals("Hello Ada", greeting);
   }
+
+  @Test
+  public void testGreetingMaintainsEmbeddedSpaces() {
+    Greeter greeter = new Greeter();
+
+    String greeting = greeter.greet("  Ada Lovelace  ");
+
+    Assert.assertEquals("Hello Ada Lovelace", greeting);
+  }
 }
