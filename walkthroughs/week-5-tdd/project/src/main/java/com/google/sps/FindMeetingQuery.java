@@ -24,34 +24,37 @@ import java.util.function.Predicate;
 
 public final class FindMeetingQuery {
   public Collection<TimeRange> query(Collection<Event> events, MeetingRequest request) {
-    Collection<TimeRange> options = new ArrayList<>();
-
     List<Event> eventsSortedByEnd = sortEvents(events, false);
 
     clearIrrelevantEvents(eventsSortedByEnd, request.getAttendees());
+
+    return findAvailableTimeSlots(eventsSortedByEnd, request.getDuration());
+  }
+
+  private Collection<TimeRange> findAvailableTimeSlots(
+      Collection<Event> eventsSortedByEnd, long minDuration) {
+    Collection<TimeRange> options = new ArrayList<>();
 
     if (eventsSortedByEnd.isEmpty()) {
       options.add(TimeRange.WHOLE_DAY);
     } else {
       Event event = getFirstEvent(eventsSortedByEnd);
-      addTimeRangeIfPossible(
-          options, TimeRange.START_OF_DAY, event.getWhen().start(), request.getDuration());
+      addTimeRangeIfPossible(options, TimeRange.START_OF_DAY, event.getWhen().start(), minDuration);
 
       Iterator<Event> eventsIter = eventsSortedByEnd.iterator();
       while (eventsIter.hasNext()) {
         Event nextEvent = eventsIter.next();
         if (!nextEvent.getWhen().overlaps(event.getWhen())) {
           addTimeRangeIfPossible(
-              options, event.getWhen().end(), nextEvent.getWhen().start(), request.getDuration());
+              options, event.getWhen().end(), nextEvent.getWhen().start(), minDuration);
         }
         event = nextEvent;
       }
 
-      addTimeRangeIfPossible(
-          options, event.getWhen().end(), TimeRange.END_OF_DAY, request.getDuration());
+      addTimeRangeIfPossible(options, event.getWhen().end(), TimeRange.END_OF_DAY, minDuration);
     }
 
-    if (TimeRange.WHOLE_DAY.duration() < request.getDuration()) {
+    if (TimeRange.WHOLE_DAY.duration() < minDuration) {
       options.clear();
     }
     return options;
