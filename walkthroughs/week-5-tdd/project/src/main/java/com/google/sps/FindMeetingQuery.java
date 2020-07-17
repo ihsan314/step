@@ -26,7 +26,19 @@ public final class FindMeetingQuery {
   public Collection<TimeRange> query(Collection<Event> events, MeetingRequest request) {
     Collection<TimeRange> options = new ArrayList<>();
     List<Event> eventsSorted = new ArrayList<>();
+    List<Event> eventsSortedByEnd = new ArrayList<>();
     eventsSorted.addAll(events);
+    eventsSortedByEnd.addAll(events);
+
+    Collections.sort(
+        eventsSortedByEnd,
+        new Comparator<Event>() {
+          @Override
+          public int compare(Event a, Event b) {
+            return TimeRange.ORDER_BY_END.compare(a.getWhen(), b.getWhen());
+          }
+        });
+
     Collections.sort(
         eventsSorted,
         new Comparator<Event>() {
@@ -35,6 +47,7 @@ public final class FindMeetingQuery {
             return TimeRange.ORDER_BY_START.compare(a.getWhen(), b.getWhen());
           }
         });
+
     eventsSorted.removeIf(
         new Predicate<Event>() {
           @Override
@@ -53,6 +66,8 @@ public final class FindMeetingQuery {
       Event event = eventsIter.next();
       addTimeRangeIfPossible(
           options, TimeRange.START_OF_DAY, event.getWhen().start(), request.getDuration());
+
+      eventsIter = eventsSortedByEnd.iterator();
       while (eventsIter.hasNext()) {
         Event nextEvent = eventsIter.next();
         if (!nextEvent.getWhen().overlaps(event.getWhen())) {
@@ -61,9 +76,11 @@ public final class FindMeetingQuery {
         }
         event = nextEvent;
       }
+
       addTimeRangeIfPossible(
           options, event.getWhen().end(), TimeRange.END_OF_DAY, request.getDuration());
     }
+
     if (TimeRange.WHOLE_DAY.duration() < request.getDuration()) {
       options.clear();
     }
