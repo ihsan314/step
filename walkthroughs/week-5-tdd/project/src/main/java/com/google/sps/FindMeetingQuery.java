@@ -25,49 +25,19 @@ import java.util.function.Predicate;
 public final class FindMeetingQuery {
   public Collection<TimeRange> query(Collection<Event> events, MeetingRequest request) {
     Collection<TimeRange> options = new ArrayList<>();
-    List<Event> eventsSorted = new ArrayList<>();
-    List<Event> eventsSortedByEnd = new ArrayList<>();
-    eventsSorted.addAll(events);
-    eventsSortedByEnd.addAll(events);
 
-    Collections.sort(
-        eventsSortedByEnd,
-        new Comparator<Event>() {
-          @Override
-          public int compare(Event a, Event b) {
-            return TimeRange.ORDER_BY_END.compare(a.getWhen(), b.getWhen());
-          }
-        });
+    List<Event> eventsSortedByEnd = sortEvents(events, false);
 
-    Collections.sort(
-        eventsSorted,
-        new Comparator<Event>() {
-          @Override
-          public int compare(Event a, Event b) {
-            return TimeRange.ORDER_BY_START.compare(a.getWhen(), b.getWhen());
-          }
-        });
+    clearIrrelevantEvents(eventsSortedByEnd, request.getAttendees());
 
-    eventsSorted.removeIf(
-        new Predicate<Event>() {
-          @Override
-          public boolean test(Event e) {
-            Collection<String> eventAttendees = new ArrayList<>();
-            eventAttendees.addAll(e.getAttendees());
-            eventAttendees.removeAll(request.getAttendees());
-            return e.getAttendees().size() == eventAttendees.size();
-          }
-        });
-
-    if (eventsSorted.isEmpty()) {
+    if (eventsSortedByEnd.isEmpty()) {
       options.add(TimeRange.WHOLE_DAY);
     } else {
-      Iterator<Event> eventsIter = eventsSorted.iterator();
-      Event event = eventsIter.next();
+      Event event = getFirstEvent(eventsSortedByEnd);
       addTimeRangeIfPossible(
           options, TimeRange.START_OF_DAY, event.getWhen().start(), request.getDuration());
 
-      eventsIter = eventsSortedByEnd.iterator();
+      Iterator<Event> eventsIter = eventsSortedByEnd.iterator();
       while (eventsIter.hasNext()) {
         Event nextEvent = eventsIter.next();
         if (!nextEvent.getWhen().overlaps(event.getWhen())) {
@@ -93,5 +63,42 @@ public final class FindMeetingQuery {
     if (option.duration() >= minDuration) {
       options.add(option);
     }
+  }
+
+  private Event getFirstEvent(Collection<Event> events) {
+    List<Event> eventsSorted = sortEvents(events, true);
+    return eventsSorted.get(0);
+  }
+
+  private List<Event> sortEvents(Collection<Event> events, boolean sortByStart) {
+    List<Event> eventsSorted = new ArrayList<>();
+    eventsSorted.addAll(events);
+
+    Collections.sort(
+        eventsSorted,
+        new Comparator<Event>() {
+          @Override
+          public int compare(Event a, Event b) {
+            return sortByStart
+                ? TimeRange.ORDER_BY_START.compare(a.getWhen(), b.getWhen())
+                : TimeRange.ORDER_BY_END.compare(a.getWhen(), b.getWhen());
+          }
+        });
+
+    return eventsSorted;
+  }
+
+  private void clearIrrelevantEvents(
+      Collection<Event> events, Collection<String> meetingAttendees) {
+    events.removeIf(
+        new Predicate<Event>() {
+          @Override
+          public boolean test(Event e) {
+            Collection<String> eventAttendees = new ArrayList<>();
+            eventAttendees.addAll(e.getAttendees());
+            eventAttendees.removeAll(meetingAttendees);
+            return e.getAttendees().size() == eventAttendees.size();
+          }
+        });
   }
 }
