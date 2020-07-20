@@ -31,7 +31,7 @@ public final class FindMeetingQuery {
     return findAvailableTimeSlots(eventsSortedByEnd, request.getDuration());
   }
 
-  private Collection<TimeRange> findAvailableTimeSlots(
+  private static Collection<TimeRange> findAvailableTimeSlots(
       Collection<Event> eventsSortedByEnd, long minDuration) {
     Collection<TimeRange> options = new ArrayList<>();
 
@@ -60,7 +60,7 @@ public final class FindMeetingQuery {
     return options;
   }
 
-  private void addTimeRangeIfPossible(
+  private static void addTimeRangeIfPossible(
       Collection<TimeRange> options, int beginTime, int endTime, long minDuration) {
     TimeRange option = TimeRange.fromStartEnd(beginTime, endTime, endTime == TimeRange.END_OF_DAY);
     if (option.duration() >= minDuration) {
@@ -68,12 +68,12 @@ public final class FindMeetingQuery {
     }
   }
 
-  private Event getFirstEvent(Collection<Event> events) {
+  private static Event getFirstEvent(Collection<Event> events) {
     List<Event> eventsSorted = sortEvents(events, true);
     return eventsSorted.get(0);
   }
 
-  private List<Event> sortEvents(Collection<Event> events, boolean sortByStart) {
+  private static List<Event> sortEvents(Collection<Event> events, boolean sortByStart) {
     List<Event> eventsSorted = new ArrayList<>();
     eventsSorted.addAll(events);
 
@@ -91,7 +91,7 @@ public final class FindMeetingQuery {
     return eventsSorted;
   }
 
-  private void clearIrrelevantEvents(
+  private static void clearIrrelevantEvents(
       Collection<Event> events, Collection<String> meetingAttendees) {
     events.removeIf(
         new Predicate<Event>() {
