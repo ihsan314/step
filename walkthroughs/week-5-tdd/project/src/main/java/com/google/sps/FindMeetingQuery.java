@@ -21,10 +21,12 @@ import java.util.Comparator;
 import java.util.Iterator;
 import java.util.List;
 import java.util.function.Predicate;
+import static java.util.Comparator.comparing;
+import static java.util.stream.Collectors.toList;
 
 public final class FindMeetingQuery {
   public Collection<TimeRange> query(Collection<Event> events, MeetingRequest request) {
-    List<Event> eventsSortedByEnd = sortEvents(events, false);
+    List<Event> eventsSortedByEnd = sortEvents(events, TimeRange.ORDER_BY_END);
 
     clearIrrelevantEvents(eventsSortedByEnd, request.getAttendees());
 
@@ -69,26 +71,12 @@ public final class FindMeetingQuery {
   }
 
   private static Event getFirstEvent(Collection<Event> events) {
-    List<Event> eventsSorted = sortEvents(events, true);
+    List<Event> eventsSorted = sortEvents(events, TimeRange.ORDER_BY_START);
     return eventsSorted.get(0);
   }
 
-  private static List<Event> sortEvents(Collection<Event> events, boolean sortByStart) {
-    List<Event> eventsSorted = new ArrayList<>();
-    eventsSorted.addAll(events);
-
-    Collections.sort(
-        eventsSorted,
-        new Comparator<Event>() {
-          @Override
-          public int compare(Event a, Event b) {
-            return sortByStart
-                ? TimeRange.ORDER_BY_START.compare(a.getWhen(), b.getWhen())
-                : TimeRange.ORDER_BY_END.compare(a.getWhen(), b.getWhen());
-          }
-        });
-
-    return eventsSorted;
+  private static List<Event> sortEvents(Collection<Event> events, Comparator<TimeRange> sortingOrder) {
+    return events.stream().sorted(comparing(Event::getWhen, sortingOrder)).collect(toList());
   }
 
   private static void clearIrrelevantEvents(
