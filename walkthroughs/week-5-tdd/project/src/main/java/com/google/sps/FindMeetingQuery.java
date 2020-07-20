@@ -14,15 +14,15 @@
 
 package com.google.sps;
 
+import static java.util.Comparator.comparing;
+import static java.util.stream.Collectors.toList;
+
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Iterator;
 import java.util.List;
-import java.util.function.Predicate;
-import static java.util.Comparator.comparing;
-import static java.util.stream.Collectors.toList;
 
 public final class FindMeetingQuery {
   public Collection<TimeRange> query(Collection<Event> events, MeetingRequest request) {
@@ -53,8 +53,8 @@ public final class FindMeetingQuery {
     while (eventsIter.hasNext()) {
       Event nextEvent = eventsIter.next();
       if (!nextEvent.getWhen().overlaps(event.getWhen())) {
-	addTimeRangeIfPossible(
-	    options, event.getWhen().end(), nextEvent.getWhen().start(), minDuration);
+        addTimeRangeIfPossible(
+            options, event.getWhen().end(), nextEvent.getWhen().start(), minDuration);
       }
       event = nextEvent;
     }
@@ -77,7 +77,8 @@ public final class FindMeetingQuery {
     return eventsSorted.get(0);
   }
 
-  private static List<Event> sortEvents(Collection<Event> events, Comparator<TimeRange> sortingOrder) {
+  private static List<Event> sortEvents(
+      Collection<Event> events, Comparator<TimeRange> sortingOrder) {
     return events.stream().sorted(comparing(Event::getWhen, sortingOrder)).collect(toList());
   }
 
