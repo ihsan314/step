@@ -83,15 +83,6 @@ public final class FindMeetingQuery {
 
   private static void clearIrrelevantEvents(
       Collection<Event> events, Collection<String> meetingAttendees) {
-    events.removeIf(
-        new Predicate<Event>() {
-          @Override
-          public boolean test(Event e) {
-            Collection<String> eventAttendees = new ArrayList<>();
-            eventAttendees.addAll(e.getAttendees());
-            eventAttendees.removeAll(meetingAttendees);
-            return e.getAttendees().size() == eventAttendees.size();
-          }
-        });
+    events.removeIf(e -> Collections.disjoint(e.getAttendees(), meetingAttendees));
   }
 }
