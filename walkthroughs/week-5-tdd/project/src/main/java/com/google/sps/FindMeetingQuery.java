@@ -28,7 +28,7 @@ public final class FindMeetingQuery {
   public Collection<TimeRange> query(Collection<Event> events, MeetingRequest request) {
     List<Event> eventsSortedByEnd = sortEvents(events, TimeRange.ORDER_BY_END);
 
-    clearIrrelevantEvents(eventsSortedByEnd, request.getAttendees());
+    clearUnattendedEvents(eventsSortedByEnd, request.getAttendees());
 
     return findAvailableTimeSlots(eventsSortedByEnd, request.getDuration());
   }
@@ -81,7 +81,7 @@ public final class FindMeetingQuery {
     return events.stream().sorted(comparing(Event::getWhen, sortingOrder)).collect(toList());
   }
 
-  private static void clearIrrelevantEvents(
+  private static void clearUnattendedEvents(
       Collection<Event> events, Collection<String> meetingAttendees) {
     events.removeIf(e -> Collections.disjoint(e.getAttendees(), meetingAttendees));
   }
