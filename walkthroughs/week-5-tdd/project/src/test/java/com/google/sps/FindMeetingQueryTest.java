@@ -270,5 +270,25 @@ public final class FindMeetingQueryTest {
 
     Assert.assertEquals(expected, actual);
   }
+
+  @Test
+  public void everyRequiredAttendeeIsConsidered() {
+  }
+
+  @Test
+  public void evenOptionalAttendeeIsConsidered() {
+  }
+
+  @Test
+  public void justEnoughRoomForRequiredAttendees() {
+  }
+
+  @Test
+  public void optionalAttendeesWithGaps() {
+  }
+
+  @Test
+  public void optionalAttendeesButNoGaps() {
+  }
 }
 
