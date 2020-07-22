@@ -43,6 +43,8 @@ public final class FindMeetingQueryTest {
   private static final int TIME_0930AM = TimeRange.getTimeInMinutes(9, 30);
   private static final int TIME_1000AM = TimeRange.getTimeInMinutes(10, 0);
   private static final int TIME_1100AM = TimeRange.getTimeInMinutes(11, 00);
+  private static final int TIME_1130AM = TimeRange.getTimeInMinutes(11, 30);
+  private static final int TIME_1200 = TimeRange.getTimeInMinutes(12, 00);
 
   private static final int DURATION_15_MINUTES = 15;
   private static final int DURATION_30_MINUTES = 30;
@@ -363,6 +365,22 @@ public final class FindMeetingQueryTest {
 
   @Test
   public void optionalAttendeesWithGaps() {
+    Collection<Event> events = Arrays.asList(
+	new Event("Event 1", TimeRange.fromStartDuration(TIME_0830AM, DURATION_30_MINUTES),
+	  Arrays.asList(PERSON_A)),
+	new Event("Event 2", TimeRange.fromStartDuration(TIME_1130AM, DURATION_30_MINUTES),
+	  Arrays.asList(PERSON_B)));
+
+    MeetingRequest request = new MeetingRequest(Arrays.asList(), DURATION_30_MINUTES);
+
+    request.addOptionalAttendee(PERSON_A);
+    request.addOptionalAttendee(PERSON_B);
+    Collection<TimeRange> expected = Arrays.asList(
+	TimeRange.fromStartEnd(TimeRange.START_OF_DAY, TIME_0830AM, false),
+	TimeRange.fromStartEnd(TIME_0900AM, TIME_1130AM, false),
+	TimeRange.fromStartEnd(TIME_1200, TimeRange.END_OF_DAY, true));
+    Collection<TimeRange> actual = query.query(events, request);
+    Assert.assertEquals(expected, actual);
   }
 
   @Test
