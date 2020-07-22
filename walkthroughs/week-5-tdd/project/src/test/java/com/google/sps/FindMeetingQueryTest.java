@@ -454,6 +454,9 @@ public final class FindMeetingQueryTest {
 
   @Test
   public void optionalAttendeesButNoGaps() {
+    // Have optional attendees with back to back events. No meeting times will be returned.
+    // Events: |----A----||----B----|
+    // Day:    |--------------------|
     Collection<Event> events =
         Arrays.asList(
             new Event(
