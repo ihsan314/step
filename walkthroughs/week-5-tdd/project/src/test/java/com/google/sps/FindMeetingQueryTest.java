@@ -317,7 +317,7 @@ public final class FindMeetingQueryTest {
   }
 
   @Test
-  public void everyRequiredAttendeeIsConsidered() {
+  public void optionalAttendeeCannotAttend() {
     // Have each person have different events, with one optional attendee having a day-long event.
     // We should see three options because each required attendee has split the restricted times.
     //
@@ -353,7 +353,7 @@ public final class FindMeetingQueryTest {
   }
 
   @Test
-  public void evenOptionalAttendeeIsConsidered() {
+  public void optionalAttendeeIsConsidered() {
     // Have each person have different events, with one optional attendee having an event in the
     // middle.
     // We should see two options because each required attendee has split the restricted times.
