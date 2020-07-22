@@ -397,7 +397,7 @@ public final class FindMeetingQueryTest {
     // enough room at one point in the day to have the meeting for the required attendee.
     //
     // Events  : |--A--|     |----A----|
-    // Events  :       |--|
+    // Events  :       |-B-|
     // Day     : |---------------------|
     // Options :       |-----|
 
