@@ -30,7 +30,9 @@ public final class FindMeetingQuery {
 
     clearUnattendedEvents(eventsSortedByEnd, request.getAttendees());
 
-    return findAvailableTimeSlots(eventsSortedByEnd, request.getDuration());
+    Collection<TimeRange> options = findAvailableTimeSlots(eventsSortedByEnd, request.getDuration());
+
+    return accommodateOptionalAttendees(options, events, request.getOptionalAttendees());
   }
 
   private static Collection<TimeRange> findAvailableTimeSlots(
@@ -85,5 +87,16 @@ public final class FindMeetingQuery {
   private static void clearUnattendedEvents(
       Collection<Event> events, Collection<String> meetingAttendees) {
     events.removeIf(e -> Collections.disjoint(e.getAttendees(), meetingAttendees));
+  }
+
+  private static Collection<TimeRange> accommodateOptionalAttendees(Collection<TimeRange> currentOptions, Collection<Event> events, Collection<String> optionalAttendees) {
+    if (optionalAttendees.isEmpty()) {
+      return currentOptions;
+    }
+    Collection<Event> eventsSortedByEnd = sortEvents(events, TimeRange.ORDER_BY_END);
+    clearUnattendedEvents(eventsSortedByEnd, optionalAttendees);
+    Collection<TimeRange> trimmedOptions = new ArrayList<>();
+    // iteration goes here
+    return trimmedOptions;
   }
 }
