@@ -91,18 +91,21 @@ public final class FindMeetingQuery {
 
   private static Collection<TimeRange> accommodateOptionalAttendees(Collection<TimeRange> currentOptions, Collection<Event> events, MeetingRequest request) {
     Collection<String> optionalAttendees = request.getOptionalAttendees();
-    if (optionalAttendees.isEmpty()) {
+    Collection<Event> eventsSortedByEnd = sortEvents(events, TimeRange.ORDER_BY_END);
+    clearUnattendedEvents(eventsSortedByEnd, optionalAttendees);
+    if (optionalAttendees.isEmpty() || eventsSortedByEnd.isEmpty()) {
       return currentOptions;
     }
 
-    Collection<Event> eventsSortedByEnd = sortEvents(events, TimeRange.ORDER_BY_END);
-    clearUnattendedEvents(eventsSortedByEnd, optionalAttendees);
     if (currentOptions.isEmpty()) {
       return findAvailableTimeSlots(eventsSortedByEnd, request.getDuration());
     }
 
     Collection<TimeRange> trimmedOptions = new ArrayList<>();
-    // iteration goes here
+    for (Iterator<Event> eventIter = eventsSortedByEnd.iterator(); eventIter.hasNext();) {
+      // iteration goes here
+    }
+
     return trimmedOptions;
   }
 }
