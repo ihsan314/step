@@ -31,7 +31,8 @@ public final class FindMeetingQuery {
 
     clearUnattendedEvents(eventsSortedByEnd, request.getAttendees());
 
-    Collection<TimeRange> options = findAvailableTimeSlots(eventsSortedByEnd, request.getDuration());
+    Collection<TimeRange> options =
+        findAvailableTimeSlots(eventsSortedByEnd, request.getDuration());
 
     return accommodateOptionalAttendees(options, events, request);
   }
@@ -90,7 +91,8 @@ public final class FindMeetingQuery {
     events.removeIf(e -> Collections.disjoint(e.getAttendees(), meetingAttendees));
   }
 
-  private static Collection<TimeRange> accommodateOptionalAttendees(Collection<TimeRange> currentOptions, Collection<Event> events, MeetingRequest request) {
+  private static Collection<TimeRange> accommodateOptionalAttendees(
+      Collection<TimeRange> currentOptions, Collection<Event> events, MeetingRequest request) {
     Collection<String> optionalAttendees = request.getOptionalAttendees();
     long minDuration = request.getDuration();
     Collection<Event> eventsSortedByEnd = sortEvents(events, TimeRange.ORDER_BY_END);
@@ -111,22 +113,29 @@ public final class FindMeetingQuery {
       Event event = eventIter.next();
       boolean useNextSlot = false;
       if (currentSlot.overlaps(event.getWhen())) {
-	useNextSlot = slotsIter.hasNext();
-	if (!event.getWhen().contains(currentSlot)) {
-	  int newStartTime = currentSlot.start() < event.getWhen().start() ? currentSlot.start() : event.getWhen().end();
-	  int newEndTime = currentSlot.end() < event.getWhen().end() ? event.getWhen().start() : currentSlot.end();
-	  TimeRange possibleSlot = TimeRange.fromStartEnd(newStartTime, newEndTime, TimeRange.END_OF_DAY == newEndTime);
-	  if (possibleSlot.duration() >= minDuration) {
-	    trimmedOptions.add(possibleSlot);
-	  }
-	}
+        useNextSlot = slotsIter.hasNext();
+        if (!event.getWhen().contains(currentSlot)) {
+          int newStartTime =
+              currentSlot.start() < event.getWhen().start()
+                  ? currentSlot.start()
+                  : event.getWhen().end();
+          int newEndTime =
+              currentSlot.end() < event.getWhen().end()
+                  ? event.getWhen().start()
+                  : currentSlot.end();
+          TimeRange possibleSlot =
+              TimeRange.fromStartEnd(newStartTime, newEndTime, TimeRange.END_OF_DAY == newEndTime);
+          if (possibleSlot.duration() >= minDuration) {
+            trimmedOptions.add(possibleSlot);
+          }
+        }
       } else if (currentSlot.end() < event.getWhen().start()) {
-	useNextSlot = slotsIter.hasNext();
-	trimmedOptions.add(currentSlot);
+        useNextSlot = slotsIter.hasNext();
+        trimmedOptions.add(currentSlot);
       }
 
       if (useNextSlot) {
-	currentSlot = slotsIter.next();
+        currentSlot = slotsIter.next();
       }
     }
 
