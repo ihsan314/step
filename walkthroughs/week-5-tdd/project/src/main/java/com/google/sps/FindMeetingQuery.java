@@ -102,8 +102,9 @@ public final class FindMeetingQuery {
     }
 
     Collection<TimeRange> trimmedOptions = new ArrayList<>();
-    for (Iterator<Event> eventIter = eventsSortedByEnd.iterator(); eventIter.hasNext();) {
+    for (Iterator<Event> eventIter = eventsSortedByEnd.iterator(), Iterator<TimeRange> timeSlotIter = currentOptions.iterator(); eventIter.hasNext();) {
       // iteration goes here
+      Event event = eventIter.next();
     }
 
     return trimmedOptions;
