@@ -112,11 +112,13 @@ public final class FindMeetingQuery {
       boolean useNextSlot = false;
       if (currentSlot.overlaps(event.getWhen())) {
 	useNextSlot = slotsIter.hasNext();
-	int newStartTime = currentSlot.start() < event.getWhen().start() ? currentSlot.start() : event.getWhen().end();
-	int newEndTime = currentSlot.end() < event.getWhen().end() ? event.getWhen().start() : currentSlot.end();
-	TimeRange possibleSlot = TimeRange.fromStartEnd(newStartTime, newEndTime, TimeRange.END_OF_DAY == newEndTime);
-	if (possibleSlot.duration() >= minDuration) {
-	  trimmedOptions.add(possibleSlot);
+	if (!event.getWhen().contains(currentSlot)) {
+	  int newStartTime = currentSlot.start() < event.getWhen().start() ? currentSlot.start() : event.getWhen().end();
+	  int newEndTime = currentSlot.end() < event.getWhen().end() ? event.getWhen().start() : currentSlot.end();
+	  TimeRange possibleSlot = TimeRange.fromStartEnd(newStartTime, newEndTime, TimeRange.END_OF_DAY == newEndTime);
+	  if (possibleSlot.duration() >= minDuration) {
+	    trimmedOptions.add(possibleSlot);
+	  }
 	}
       } else if (currentSlot.end() < event.getWhen().start()) {
 	useNextSlot = slotsIter.hasNext();
@@ -128,6 +130,6 @@ public final class FindMeetingQuery {
       }
     }
 
-    return trimmedOptions;
+    return trimmedOptions.isEmpty() ? currentOptions : trimmedOptions;
   }
 }
