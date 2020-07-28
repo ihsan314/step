@@ -33,7 +33,7 @@ function addRandomGreeting() {
 function addRandomFact() {
   // Keep track of how many times the function has been called, to determine
   // when to reveal the quiz
-  if (typeof addRandomFact.numTimesCalled === undefined) {
+  if (typeof addRandomFact.numTimesCalled === 'undefined') {
     addRandomFact.numTimesCalled = 0;
   }
   addRandomFact.numTimesCalled++;
@@ -43,7 +43,7 @@ function addRandomFact() {
     // The probability of one of these two showing up is 2/4 = 1/2, and after
     // 3 clicks the expected number of times at least one of these facts show up
     // is 1.5 times. Hence 3 clicks is a good time to show the actual facts.
-    document.getElementById('quiz-container').style.display = 'block';
+    document.getElementById('quiz-container').classList.remove('hidden');
     presentQuiz();
   }
 

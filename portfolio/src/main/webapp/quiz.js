@@ -79,12 +79,12 @@ function presentQuiz() {
     const quizArea = document.createElement('select');
     quizArea.setAttribute('id', generateId(questionNum));
     for (let answerIndex = 0; answerIndex < answers.length; answerIndex++) {
-      quizArea.appendChild(createOption());
+      quizArea.appendChild(createOption(answerIndex, answers[answerIndex]));
     }
 
     quizArea.appendChild(createEmptyOption());
 
-    questionsContainer.appendChild(questionStatement);
+    questionsContainer.appendChild(questionStatementElement);
     questionsContainer.appendChild(quizArea);
   }
 }

@@ -2,32 +2,83 @@
 <html>
   <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
     <title>Ihsan Olawale's Portfolio</title>
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="assets/css/main.css">
     <script src="script.js"></script>
     <script src="quiz.js"></script>
+    <noscript><link rel="stylesheet" href="assets/css/noscript.css"></noscript>
   </head>
-  <body>
-    <div id="content">
-      <h1>Ihsan Olawale's Portfolio</h1>
-      <p>This is Ihsan Olawale's portfolio.</p>
-      <p>I, Ihsan Olawale, am a STEP intern at Google. By the end of the internship I will have created a web project. This is practice.</p>
-      <p>Click here to get a random message:</p>
-      <button onclick="addRandomGreeting()">Hello</button>
-      <div id="greeting-container"></div>
-      <p>Here's what I look like, at least when looking at my Google security photo:</p>
-      <img src="/images/me.png" alt="What I look like" width="300" height="300">
-      <p>After seeing what I look like, you might be interested to know more about me. Don't worry, I considered this during the design phase, and presented an opportunity to cycle through assorted facts.</p>
-      <button onclick="addRandomFact()">Learn about me</button>
-      <div id="fact-container"></div>
-      <div id="quiz-container">
-	  <p>
-	      If you clicked the button I presented previously, you would have recognised you were trolled. I'm sorry for that, and have presented a set of multiple choice questions. Guess your way through to learn more about me:
-	  </p>
-	  <div id="questions-container"></div>
-	  <button type="button" onclick="checkSubmission()">Check Your Answer</button>
-	  <div id="submit-container"></div>
+  <body class="is-preload">
+    <header id="header">
+      <h1>Ihsan Olawale</h1>
+      <nav>
+	<ul>
+	  <li><a href="#intro">Intro</a></li>
+	  <li><a href="#looks">What I Look Like</a></li>
+	  <li><a href="#more">Learn More</a></li>
+	</ul>
+      </nav>
+    </header>
+    <section id="intro" class="main style1 dark fullscreen">
+      <div class="content">
+	<header>
+	  <h2>Who am I</h2>
+	</header>
+	<p>I am Ihsan Olawale, and am currently a STEP Intern at Google. This website
+	is actually a precursor to a follow-up website which will assist with college
+	applications. Stay tuned for that.</p>
+	<p>Click here to greet the world:</p>
+	<button onclick="addRandomGreeting()">Hello</button>
+	<div id="greeting-container"></div>
       </div>
-    </div>
+    </section>
+    <section id="looks" class="main style2 left dark fullscreen">
+      <div class="content box style2">
+	<header>
+	  <h2>What I Look Like</h2>
+	</header>
+	<p>Here's what I look like, at least when looking at my Google security photo:</p>
+	<img class="left" src="/images/me.png" alt="What I look like" width="300" height="300">
+      </div>
+    </section>
+    <section id="more" class="main style2 right dark fullscreen">
+      <div class="content box style2">
+	<header>
+	  <h2>Learn More</h2>
+	</header>
+	<p>After seeing what I look like, you might be interested to know
+	more about me. Don't worry, I considered this during the design phase,
+	and presented an opportunity to cycle through assorted facts.</p>
+	<button onclick="addRandomFact()">Learn about me</button>
+	<div id="fact-container"></div>
+      </div>
+      <div class="content box style2 hidden" id="quiz-container">
+	<p> If you clicked the button I presented previously, you would have
+	recognised you were trolled. I'm sorry for that, and have presented
+	a set of multiple choice questions. Guess your way through to learn more about me: </p>
+	<div id="questions-container"></div>
+	<button type="button" onclick="checkSubmission()">Check Your Answer</button>
+	<div id="submit-container"></div>
+      </div>
+    </section>
+    <footer id="footer">
+      <ul class="icons">
+	<li><a href="https://www.linkedin.com/in/ihsan-olawale" class="icon brands fa-linkedin-in"><span class="label">LinkedIn</span></a></li>
+	<li><a href="https://www.github.com/ihsan314" class="icon brands fa-github"><span class="label">Github</span></a></li>
+	<li><a href="mailto:ihsanolawale@outlook.com" class="icon brands fa-envelope-square"><span class="label">Email</span></a></li>
+      </ul>
+      <ul class="menu">
+	<li>&copy; Ihsan Olawale</li><li>Design: <a href="https://html5up.net/big-picture">HTML5 UP</a></li>
+      </ul>
+    </footer>
+    <script src="assets/js/jquery.min.js"></script>
+    <script src="assets/js/jquery.poptrox.min.js"></script>
+    <script src="assets/js/jquery.scrolly.min.js"></script>
+    <script src="assets/js/jquery.scrollex.min.js"></script>
+    <script src="assets/js/browser.min.js"></script>
+    <script src="assets/js/breakpoints.min.js"></script>
+    <script src="assets/js/util.js"></script>
+    <script src="assets/js/main.js"></script>
   </body>
 </html>
