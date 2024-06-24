@@ -21,6 +21,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 
@@ -30,7 +31,10 @@ public final class FindMeetingQuery {
 
     clearUnattendedEvents(eventsSortedByEnd, request.getAttendees());
 
-    return findAvailableTimeSlots(eventsSortedByEnd, request.getDuration());
+    Collection<TimeRange> options =
+        findAvailableTimeSlots(eventsSortedByEnd, request.getDuration());
+
+    return accommodateOptionalAttendees(options, events, request);
   }
 
   private static Collection<TimeRange> findAvailableTimeSlots(
@@ -85,5 +89,56 @@ public final class FindMeetingQuery {
   private static void clearUnattendedEvents(
       Collection<Event> events, Collection<String> meetingAttendees) {
     events.removeIf(e -> Collections.disjoint(e.getAttendees(), meetingAttendees));
+  }
+
+  private static Collection<TimeRange> accommodateOptionalAttendees(
+      Collection<TimeRange> currentOptions, Collection<Event> events, MeetingRequest request) {
+    Collection<String> optionalAttendees = request.getOptionalAttendees();
+    long minDuration = request.getDuration();
+    Collection<Event> eventsSortedByEnd = sortEvents(events, TimeRange.ORDER_BY_END);
+    clearUnattendedEvents(eventsSortedByEnd, optionalAttendees);
+    if (optionalAttendees.isEmpty() || eventsSortedByEnd.isEmpty()) {
+      return currentOptions;
+    }
+
+    if (currentOptions.isEmpty()) {
+      return findAvailableTimeSlots(eventsSortedByEnd, request.getDuration());
+    }
+
+    Collection<TimeRange> trimmedOptions = new HashSet<>();
+    Iterator<TimeRange> slotsIter = currentOptions.iterator();
+    TimeRange currentSlot = slotsIter.next();
+    Iterator<Event> eventIter = eventsSortedByEnd.iterator();
+    while (eventIter.hasNext()) {
+      Event event = eventIter.next();
+      boolean useNextSlot = false;
+      if (currentSlot.overlaps(event.getWhen())) {
+        useNextSlot = slotsIter.hasNext();
+        if (!event.getWhen().contains(currentSlot)) {
+          int newStartTime =
+              currentSlot.start() < event.getWhen().start()
+                  ? currentSlot.start()
+                  : event.getWhen().end();
+          int newEndTime =
+              currentSlot.end() < event.getWhen().end()
+                  ? event.getWhen().start()
+                  : currentSlot.end();
+          TimeRange possibleSlot =
+              TimeRange.fromStartEnd(newStartTime, newEndTime, TimeRange.END_OF_DAY == newEndTime);
+          if (possibleSlot.duration() >= minDuration) {
+            trimmedOptions.add(possibleSlot);
+          }
+        }
+      } else if (currentSlot.end() < event.getWhen().start()) {
+        useNextSlot = slotsIter.hasNext();
+        trimmedOptions.add(currentSlot);
+      }
+
+      if (useNextSlot) {
+        currentSlot = slotsIter.next();
+      }
+    }
+
+    return trimmedOptions.isEmpty() ? currentOptions : trimmedOptions;
   }
 }
